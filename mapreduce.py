@@ -15,36 +15,30 @@ with open('shakespeare2.txt', 'r') as f:
 with open('shakespeare3.txt', 'r') as f:
     doc3 = f.read()
 
-
 with open('shakespeare4.txt', 'r') as f:
     doc4 = f.read()
-
 
 with open('shakespeare5.txt', 'r') as f:
     doc5 = f.read()
 
-
 with open('shakespeare6.txt', 'r') as f:
     doc6 = f.read()
 
-
 with open('shakespeare7.txt', 'r') as f:
     doc7 = f.read()
-
 
 with open('shakespeare8.txt', 'r') as f:
     doc8 = f.read()
 
 
-#combine files into one big string
+#combine files into one big string and lowercase
 docs = doc1 + doc2 + doc3 + doc4 + doc5 + doc6 + doc7 + doc8
+docs = docs.lower()
 
 wordlist = [ "hate", "love", "death", "night", "sleep", "time",
             "henry", "hamlet", "you", "my", "blood", "poison", "macbeth",
             "king", "heart", "honest"
             ]
-
-
 
 
 def count_words(wordlist, document):
