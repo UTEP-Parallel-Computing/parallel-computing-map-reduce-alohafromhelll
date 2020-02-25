@@ -1,76 +1,74 @@
 import re
 import pymp
+import timeit
 
 docs = []
-#doc1 = "the the the the time time time we love love love spent together spent"
+doc1 = "the the the the time time time we love love love spent together spent"
 
 #doc2 = "i've spent some time together"
-with open('shakespeare1.txt', 'r') as f:
-    doc1 = f.read()
-    docs.append(doc1)
+#with open('shakespeare1.txt', 'r') as f:
+    #doc1 = f.read()
+    #docs.append(doc1)
 
-with open('shakespeare2.txt', 'r') as f:
-    doc2 = f.read()
-    docs.append(doc2)
+#with open('shakespeare2.txt', 'r') as f:
+    #doc1 = f.read()
+    #docs.append(doc1)
 
-with open('shakespeare3.txt', 'r') as f:
-    doc3 = f.read()
-    docs.append(doc3)
-
-with open('shakespeare4.txt', 'r') as f:
-    doc4 = f.read()
-    docs.append(doc4)
-
+# with open('shakespeare3.txt', 'r') as f:
+#     doc3 = f.read()
+#     docs.append(doc3)
+#
+# with open('shakespeare4.txt', 'r') as f:
+#     doc4 = f.read()
+#     docs.append(doc4)
+#
+# with open('shakespeare5.txt', 'r') as f:
+#     doc5 = f.read()
+#     docs.append(doc5)
+#
+# with open('shakespeare6.txt', 'r') as f:
+#     doc6 = f.read()
+#     docs.append(doc6)
+#
+# with open('shakespeare7.txt', 'r') as f:
+#     doc7 = f.read()
+#     docs.append(doc7)
+#
+# with open('shakespeare8.txt', 'r') as f:
+#     doc8 = f.read()
+#     docs.append(doc8)
 wordlist = [ "hate", "love", "death", "night", "sleep", "time"]
+result = pymp.shared.dict()
 
-#wordcount = dict((x,0) for x in wordlist)
+for word in wordlist:
+    result.update({word : 0})
 
 
 
+def count_words(wordlist, document, result):
 
-
-def count_words(wordlist, document):
     newlist = re.findall(r"\w+", document)
-    #newlist2 = pymp.shared.list()
-    dumblist = ["love", "time", "spent"]
-    #for x in newlist:
-        #newlist2.append(x)
-    #print(newlist2)
-    wc = pymp.shared.dict()
 
-    #add words to dictionary for results
+    with pymp.Parallel(8) as p:
 
+        #print("hello")
+        #sumLock = p.lock
+        #print(newlist)
 
-    with pymp.Parallel(1) as p:
-        sumLock = p.lock
-        for word in wordlist:
-            wc.update({word : 0})
         for w in p.iterate(newlist):
-            #p.print(w)
-            if w in wc:
-                sumLock.acquire()
-#lock
-                wc[w] += 1
-                sumLock.release()
+            #print("hello")
+            if w in result:
+                #sumLock.acquire()
+                #lock
+                result[w] += 1
+                #sumLock.release()
                 #release lock
-    return wc
+    return result
 
 
 
-#print(doc1)
-	#docs.append(doc1)
-
-
-
-
-
-
-print(type(doc1))
-
-for doc in docs:
-    wordcount = count_words(wordlist, doc)
-
-print(wordcount)
+#print(wc)
+#print(docs[0])
 
 
 
@@ -78,4 +76,13 @@ print(wordcount)
 
 
 
-#findall finds all the matches and returns them as a list of strings
+#start timer
+start = timeit.default_timer()
+
+#for doc in docs:
+#wordcount = count_words(wordlist, doc1)
+print (count_words(wordlist, doc1, result))
+#stop timer
+stop = timeit.default_timer()
+#print time
+print('Time: ', stop - start)
