@@ -3,8 +3,8 @@ import re
 import pymp
 import timeit
 
-
-#docs = "hate love death night death"
+# open file for writing
+out_file = open('results.txt', 'w')
 
 #read files
 with open('shakespeare1.txt', 'r') as f:
@@ -45,7 +45,7 @@ wordlist = [ "hate", "love", "death", "night", "sleep", "time",
 def count_words(wordlist, document):
     result = pymp.shared.dict()
 
-    with pymp.Parallel(16) as p:
+    with pymp.Parallel(8) as p:
         for word in wordlist:
             result.update({word : 0})
 
@@ -64,11 +64,11 @@ def count_words(wordlist, document):
     return result
 
 
-
 #start timer
 start = timeit.default_timer()
 
-print (count_words(wordlist, docs))
+#write to a file called results.txt
+print (count_words(wordlist, docs), file = out_file)
 #stop timer
 stop = timeit.default_timer()
 #print time
